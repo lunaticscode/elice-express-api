@@ -6,6 +6,15 @@ const signupValidator = require("../middlewares/signupValidator");
 
 userController.post("/", signupValidator, async (req, res) => {
   const { email, name, password } = req.body;
+  const isExistEmail = await getUserByEmail(email);
+
+  if (isExistEmail) {
+    return res.status(409).json({
+      isError: true,
+      message: "(!) Already exist email, Please check email",
+    });
+  }
+
   const hashedPassword = crypto
     .createHash("sha512")
     .update(password)

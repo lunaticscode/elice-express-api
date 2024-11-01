@@ -4,6 +4,21 @@ const EliceUserModel = require("../models/user.model");
 /**
  *
  * @param {string} email
+ */
+const getUserByEmail = async (email) => {
+  if (!email) return false;
+  try {
+    const user = await EliceUserModel.find({ email });
+    return user;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+};
+
+/**
+ *
+ * @param {string} email
  * @param {string} password
  */
 const getUser = (userEmail, userPassword) => {
@@ -31,4 +46,5 @@ const insertUser = async ({ email, name, password }) => {
 module.exports = {
   getUser,
   insertUser,
+  getUserByEmail,
 };
