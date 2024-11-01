@@ -1,8 +1,31 @@
 const userController = require("express").Router();
 const crypto = require("crypto");
 
-const { insertUser } = require("../services/user.service");
+const { insertUser, getUserByEmail } = require("../services/user.service");
 const signupValidator = require("../middlewares/signupValidator");
+const signinValidator = require("../middlewares/signinValidator");
+
+userController.post("/signin", signinValidator, async (req, res) => {
+  const { email, password } = req.body;
+  const user = await getUserByEmail(email);
+
+  const hashedPassword = crypto
+    .createHash("sha512")
+    .update(password)
+    .digest("base64");
+
+  if (user.password === hashedPassword) {
+    const { password, ...resultUser } = user;
+    return res
+      .status(200)
+      .json({ isError: false, message: "Success to signin", user: resultUser });
+  } else {
+    return res.status(400).json({
+      isError: true,
+      message: "(!) Invalid email or password, Please check signin form",
+    });
+  }
+});
 
 userController.post("/", signupValidator, async (req, res) => {
   const { email, name, password } = req.body;

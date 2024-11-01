@@ -1,22 +1,6 @@
 /**
  *
  * @param {string} email
- * @param {string} password
- */
-const isValidateSigninValues = (email, password) => {
-  try {
-    if (!email || !password || !email.includes("@")) {
-      return false;
-    }
-    return true;
-  } catch (err) {
-    return false;
-  }
-};
-
-/**
- *
- * @param {string} email
  * @returns {boolean}
  */
 const isValidEmail = (email) => {
@@ -48,4 +32,25 @@ module.exports = {
   isValidEmail,
   isValidName,
   isValidPassword,
+};
+
+/**
+ *
+ * @param {string} email
+ * @param {string} password
+ */
+const isValidateSigninValues = (email, password) => {
+  try {
+    if (
+      !email ||
+      !password ||
+      !email.includes("@") ||
+      !isValidPassword(password)
+    ) {
+      return false;
+    }
+    return true;
+  } catch (err) {
+    return false;
+  }
 };

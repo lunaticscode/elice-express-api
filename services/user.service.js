@@ -8,7 +8,7 @@ const EliceUserModel = require("../models/user.model");
 const getUserByEmail = async (email) => {
   if (!email) return false;
   try {
-    const user = await EliceUserModel.find({ email });
+    const user = await EliceUserModel.findOne({ email });
     return user;
   } catch (err) {
     console.log(err);
